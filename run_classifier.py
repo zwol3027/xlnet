@@ -76,7 +76,7 @@ flags.DEFINE_integer("num_core_per_host", default=8,
       help="8 for TPU v2 and v3-8, 16 for larger TPU v3 pod. In the context "
       "of GPU training, it refers to the number of GPUs used.")
 flags.DEFINE_string("tpu_job_name", default=None, help="TPU worker job name.")
-flags.DEFINE_string("tpu", default=None, help="TPU name.")
+flags.DEFINE_string("tpu_address", default=None, help="TPU address.")
 flags.DEFINE_string("tpu_zone", default=None, help="TPU zone.")
 flags.DEFINE_string("gcp_project", default=None, help="gcp project.")
 flags.DEFINE_string("master", default=None, help="master")
@@ -675,7 +675,17 @@ def main(_):
     text = preprocess_text(text, lower=FLAGS.uncased)
     return encode_ids(sp, text)
 
-  run_config = model_utils.configure_tpu(FLAGS)
+  tpu_cluster_resolver = tf.contrib.cluster_resolver.TPUClusterResolver(FLAGS.tpu_address)
+  is_per_host = tf.contrib.tpu.InputPipelineConfig.PER_HOST_V2
+  run_config = tf.contrib.tpu.RunConfig(
+      cluster=tpu_cluster_resolver,
+      model_dir=FLAGS.output_dir,
+      save_checkpoints_steps=FLAGS.save_steps,
+      keep_checkpoint_max=FLAGS.max_save,
+      tpu_config=tf.contrib.tpu.TPUConfig(
+          iterations_per_loop=FLAGS.iterations,
+          num_shards=FLAGS.num_core_per_host,
+          per_host_input_for_training=is_per_host))
 
   model_fn = get_model_fn(len(label_list) if label_list is not None else None)
 
