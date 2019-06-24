@@ -687,9 +687,13 @@ def main(_):
           num_shards=FLAGS.num_core_per_host,
           per_host_input_for_training=is_per_host))
 
+  print('test1')
+
   model_fn = get_model_fn(len(label_list) if label_list is not None else None)
+  print('test2')
 
   spm_basename = os.path.basename(FLAGS.spiece_model_file)
+  print('test3')
 
   # If TPU is not available, this will fall back to normal Estimator on CPU
   # or GPU.
