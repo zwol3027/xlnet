@@ -784,6 +784,9 @@ def main(_):
     steps_and_files = []
     filenames = tf.gfile.ListDirectory(FLAGS.model_dir)
 
+    print("lennn = ", len(steps_and_files), type(filenames), len(filenames))
+    tf.logging.info("lennn = ", len(steps_and_files),type(filenames), len(filenames))
+
     for filename in filenames:
       if filename.endswith(".index"):
         ckpt_name = filename[:-6]
@@ -800,8 +803,8 @@ def main(_):
     if not FLAGS.eval_all_ckpt:
       steps_and_files = steps_and_files[-1:]
 
-    print("lennn = ", len(steps_and_files))
-    tf.logging.info("lennn = ", len(steps_and_files))
+    print("lennn = ", len(steps_and_files), len(filenames))
+    tf.logging.info("lennn = ", len(steps_and_files), len(filenames))
 
     eval_results = []
     for global_step, filename in sorted(steps_and_files, key=lambda x: x[0]):
