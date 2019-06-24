@@ -687,7 +687,7 @@ def main(_):
           num_shards=FLAGS.num_core_per_host,
           per_host_input_for_training=is_per_host))
 
-  print('test1')
+  print("test =", FLAGS.output_dir)
 
   model_fn = get_model_fn(len(label_list) if label_list is not None else None)
   print('test2')
