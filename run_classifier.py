@@ -800,6 +800,9 @@ def main(_):
     if not FLAGS.eval_all_ckpt:
       steps_and_files = steps_and_files[-1:]
 
+    print("lennn = ", len(steps_and_files))
+    tf.logging.info("lennn = ", len(steps_and_files))
+
     eval_results = []
     for global_step, filename in sorted(steps_and_files, key=lambda x: x[0]):
       ret = estimator.evaluate(
