@@ -809,7 +809,7 @@ def main(_):
 
       ret["step"] = global_step
       ret["path"] = filename
-
+      print(ret)
       eval_results.append(ret)
 
       tf.logging.info("=" * 80)
