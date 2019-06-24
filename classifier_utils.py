@@ -127,6 +127,7 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
 
   if label_list is not None:
     label_id = label_map[example.label]
+    print(label_id, example.label, label_map[example.label])
   else:
     label_id = example.label
   if ex_index < 5:
