@@ -126,14 +126,14 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   assert len(segment_ids) == max_seq_length
 
   if label_list is not None:
-    print(label_map)
-    for key in label_map.keys():
-      print(type(key), type(label_map[key]))
-    print(label_list)
-    for key in label_list:
-      print(type(key))
-    print("LABEL_info", example.label, type(example.label))
-    print("LABEL_map", label_map[example.label])
+    # print(label_map)
+    # for key in label_map.keys():
+    #   print(type(key), type(label_map[key]))
+    # print(label_list)
+    # for key in label_list:
+    #   print(type(key))
+    # print("LABEL_info", example.label, type(example.label))
+    # print("LABEL_map", label_map[example.label])
     label_id = label_map[example.label]
   else:
     label_id = example.label
