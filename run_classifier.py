@@ -784,8 +784,8 @@ def main(_):
     steps_and_files = []
     filenames = tf.gfile.ListDirectory(FLAGS.model_dir)
 
-    print("lennn = ", len(steps_and_files), type(filenames), len(filenames))
-    tf.logging.info("lennn = ", len(steps_and_files),type(filenames), len(filenames))
+    print("lennn = ", len(steps_and_files), type(filenames), filenames)
+    tf.logging.info("lennn = ", len(steps_and_files),type(filenames), filenames)
 
     for filename in filenames:
       if filename.endswith(".index"):
