@@ -193,84 +193,6 @@ class DataProcessor(object):
 
 
 
-class GLUEIntProcessor(DataProcessor):
-  def __init__(self):
-    self.train_file = "train.tsv"
-    self.dev_file = "dev.tsv"
-    self.test_file = "test.tsv"
-    self.label_column = None
-    self.text_a_column = None
-    self.text_b_column = None
-    self.contains_header = True
-    self.test_text_a_column = None
-    self.test_text_b_column = None
-    self.test_contains_header = True
-
-  def get_train_examples(self, data_dir):
-    """See base class."""
-    return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, self.train_file)), "train")
-
-  def get_dev_examples(self, data_dir):
-    """See base class."""
-    return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, self.dev_file)), "dev")
-
-  def get_test_examples(self, data_dir):
-    """See base class."""
-    if self.test_text_a_column is None:
-      self.test_text_a_column = self.text_a_column
-    if self.test_text_b_column is None:
-      self.test_text_b_column = self.text_b_column
-
-    return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, self.test_file)), "test")
-
-  def get_labels(self):
-    """See base class."""
-    return [0, 1]
-
-  def _create_examples(self, lines, set_type):
-    """Creates examples for the training and dev sets."""
-    examples = []
-    for (i, line) in enumerate(lines):
-      if i == 0 and self.contains_header and set_type != "test":
-        continue
-      if i == 0 and self.test_contains_header and set_type == "test":
-        continue
-      guid = "%s-%s" % (set_type, i)
-
-      a_column = (self.text_a_column if set_type != "test" else
-          self.test_text_a_column)
-      b_column = (self.text_b_column if set_type != "test" else
-          self.test_text_b_column)
-
-      # there are some incomplete lines in QNLI
-      if len(line) <= a_column:
-        tf.logging.warning('Incomplete line, ignored.')
-        continue
-      text_a = line[a_column]
-
-      if b_column is not None:
-        if len(line) <= b_column:
-          tf.logging.warning('Incomplete line, ignored.')
-          continue
-        text_b = line[b_column]
-      else:
-        text_b = None
-
-      if set_type == "test":
-        label = self.get_labels()[0]
-      else:
-        if len(line) <= self.label_column:
-          tf.logging.warning('Incomplete line, ignored.')
-          continue
-        label = line[self.label_column]
-      examples.append(
-          InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-    return examples
-
-
 class GLUEProcessor(DataProcessor):
   def __init__(self):
     self.train_file = "train.tsv"
@@ -399,7 +321,7 @@ class ImdbProcessor(DataProcessor):
     return examples
 
 
-class ColaProcessor(GLUEIntProcessor):
+class ColaProcessor(GLUEProcessor):
   def __init__(self):
     super(ColaProcessor, self).__init__()
     self.label_column = 1
@@ -410,7 +332,7 @@ class ColaProcessor(GLUEIntProcessor):
     self.test_contains_header = True
 
   def get_labels(self):
-    return [0, 1]
+    return ["0", "1"]
 
 class MnliMatchedProcessor(GLUEProcessor):
   def __init__(self):
