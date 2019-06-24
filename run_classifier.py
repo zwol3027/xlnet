@@ -320,6 +320,19 @@ class ImdbProcessor(DataProcessor):
     return examples
 
 
+class ColaProcessor(GLUEProcessor):
+  def __init__(self):
+    super(ColaProcessor, self).__init__()
+    self.label_column = 1
+    self.text_a_column = 3
+    self.test_text_a_column = 1
+    self.text_b_column = None
+    self.contains_header = False
+    self.test_contains_header = True
+
+  def get_labels(self):
+    return [0, 1]
+
 class MnliMatchedProcessor(GLUEProcessor):
   def __init__(self):
     super(MnliMatchedProcessor, self).__init__()
@@ -650,6 +663,7 @@ def main(_):
       "mnli_mismatched": MnliMismatchedProcessor,
       'sts-b': StsbProcessor,
       'imdb': ImdbProcessor,
+      'cola': ColaProcessor,
       "yelp5": Yelp5Processor
   }
 
