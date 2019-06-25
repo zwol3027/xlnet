@@ -847,11 +847,17 @@ def main(_):
 
       ret["step"] = global_step
       ret["path"] = filename
+      try:
+          TP = ret['eval_true_positives']
+          TN = ret['eval_true_negatives']
+          FP = ret['eval_false_positives']
+          FN = ret['eval_false_negatives']
+
+          ret['matthews_corr'] = ((TP * TN) - (FP * FN)) / math.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+      except Exception:
+          ret['matthews_corr'] = -100
+
       eval_results.append(ret)
-      # try:
-      #     matthews_corr = ((TP * TN) - (FP * FN)) / math.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
-      # except Exception:
-      #     matthews_corr = -100
       print("retst =", ret)
       tf.logging.info("retst =", ret)
 
