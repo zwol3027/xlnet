@@ -590,10 +590,10 @@ def get_model_fn(n_class):
             "eval_precision": precision,
             "eval_recall": recall,
             "eval_f1": f,
-            "eval_false_negatives": FN,
-            "eval_false_positives": FP,
-            "eval_true_negatives": TN,
-            "eval_true_positives": TP,
+            "eval_false_negatives": float(FN),
+            "eval_false_positives": float(FP),
+            "eval_true_negatives": float(TN),
+            "eval_true_positives": float(TP),
             "matthews_corr": matthews_corr
         }
 
