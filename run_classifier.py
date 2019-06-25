@@ -579,6 +579,10 @@ def get_model_fn(n_class):
         TN = tf.metrics.true_negatives(labels=label_ids, predictions=predictions, weights=is_real_example)
         FP = tf.metrics.false_positives(labels=label_ids, predictions=predictions, weights=is_real_example)
         TP = tf.metrics.true_positives(labels=label_ids, predictions=predictions, weights=is_real_example)
+        try:
+            matthews_corr = ((TP * TN) - (FP * FN)) / math.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+        except Exception:
+            matthews_corr = -100
 
         return {
             'eval_accuracy': accuracy,
@@ -589,7 +593,8 @@ def get_model_fn(n_class):
             "eval_false_negatives": FN,
             "eval_false_positives": FP,
             "eval_true_negatives": TN,
-            "eval_true_positives": TP
+            "eval_true_positives": TP,
+            "matthews_corr": matthews_corr
         }
 
       def regression_metric_fn(
