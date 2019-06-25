@@ -320,6 +320,19 @@ class ImdbProcessor(DataProcessor):
             guid="unused_id", text_a=text, text_b=None, label=label))
     return examples
 
+class SSTProcessor(GLUEProcessor):
+  def __init__(self):
+    super(SSTProcessor, self).__init__()
+    self.label_column = 1
+    self.text_a_column = 0
+    self.test_text_a_column = 1
+    self.text_b_column = None
+    self.contains_header = True
+    self.test_contains_header = True
+
+  def get_labels(self):
+    return ["0", "1"]
+
 
 class ColaProcessor(GLUEProcessor):
   def __init__(self):
@@ -666,6 +679,7 @@ def main(_):
       'sts-b': StsbProcessor,
       'imdb': ImdbProcessor,
       'cola': ColaProcessor,
+      'sst': SSTProcessor,
       "yelp5": Yelp5Processor
   }
 
