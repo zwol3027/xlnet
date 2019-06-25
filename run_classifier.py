@@ -853,9 +853,9 @@ def main(_):
           FP = ret['eval_false_positives']
           FN = ret['eval_false_negatives']
 
-          ret['matthews_corr'] = ((TP * TN) - (FP * FN)) / math.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+          ret['eval_matthews_corr'] = ((TP * TN) - (FP * FN)) / math.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
       except Exception:
-          ret['matthews_corr'] = -100
+          ret['eval_matthews_corr'] = -100
 
       eval_results.append(ret)
       print("retst =", ret)
@@ -868,6 +868,8 @@ def main(_):
       tf.logging.info(log_str)
 
     key_name = "eval_pearsonr" if FLAGS.is_regression else "eval_accuracy"
+    if FLAGS.task_name == 'cola':
+        key_name = "eval_matthews_corr"
     eval_results.sort(key=lambda x: x[key_name], reverse=True)
 
     tf.logging.info("=" * 80)
