@@ -420,6 +420,7 @@ def file_based_convert_examples_to_features(
 
   writer = tf.python_io.TFRecordWriter(output_file)
 
+  np.random.shuffle(examples)
   if num_passes > 1:
     examples *= num_passes
 
