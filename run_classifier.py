@@ -579,10 +579,6 @@ def get_model_fn(n_class):
         TN = tf.metrics.true_negatives(labels=label_ids, predictions=predictions, weights=is_real_example)
         FP = tf.metrics.false_positives(labels=label_ids, predictions=predictions, weights=is_real_example)
         TP = tf.metrics.true_positives(labels=label_ids, predictions=predictions, weights=is_real_example)
-        try:
-            matthews_corr = ((TP * TN) - (FP * FN)) / math.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
-        except Exception:
-            matthews_corr = -100
 
         return {
             'eval_accuracy': accuracy,
@@ -590,11 +586,10 @@ def get_model_fn(n_class):
             "eval_precision": precision,
             "eval_recall": recall,
             "eval_f1": f,
-            "eval_false_negatives": float(FN),
-            "eval_false_positives": float(FP),
-            "eval_true_negatives": float(TN),
-            "eval_true_positives": float(TP),
-            "matthews_corr": matthews_corr
+            "eval_false_negatives": FN,
+            "eval_false_positives": FP,
+            "eval_true_negatives": TN,
+            "eval_true_positives": TP
         }
 
       def regression_metric_fn(
@@ -853,9 +848,12 @@ def main(_):
       ret["step"] = global_step
       ret["path"] = filename
       eval_results.append(ret)
-
-      print("ret =", ret)
-      tf.logging.info("ret =", ret)
+      # try:
+      #     matthews_corr = ((TP * TN) - (FP * FN)) / math.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+      # except Exception:
+      #     matthews_corr = -100
+      print("retst =", ret)
+      tf.logging.info("retst =", ret)
 
       tf.logging.info("=" * 80)
       log_str = "Eval result | "
